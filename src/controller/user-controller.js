@@ -58,9 +58,29 @@ const get=async(req,res)=>{
         })
     }
 }
+const signIn=async(req,res)=>{
+    try{
+        const user=await userservics.signIn(req.body.email,req.body.password);
+        return res.status(201).json({
+            data:user,
+            success:true,
+            message:"successfully Signed In",
+            error:{}
+        })
+    }
+    catch(err){
+        return res.status(500).json({
+            data:{},
+            success:false,
+            message:"unable to Sign In",
+            error:err
+        })
+    }
+}
 
 module.exports={
     create,
     destroy,
-    get
+    get,
+    signIn
 }

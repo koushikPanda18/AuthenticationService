@@ -2,6 +2,7 @@ const userRepository=require('../repository/user-repository');
 
 const jwt=require('jsonwebtoken');
 const {JWT_KEY}=require('../config/server-config');
+const bcrypt=require('bcrypt');
 
 const userrepository=new userRepository();
 class userService{
@@ -64,6 +65,33 @@ class userService{
             throw err;
         }
     }
+
+    async signIn(email,plainPassword){
+        //Step-1---get the user by email
+        const user=await userrepository.getUserByEmail(email);
+        //Step-2---verify password
+        const matchPassword=this.checkPassword(plainPassword,user.password);
+        if(!matchPassword){
+            console.log('Password do not match');
+            throw{err:'Incorrect Password'};
+        }
+        //Step-3---Create token
+        return this.createToken({email:user.email,id:user.id});
+
+    }
+
+
+    checkPassword(userInputPlainPassword,encryptedPassword){
+        try{
+            const response=bcrypt.compareSync(userInputPlainPassword,encryptedPassword);
+            return response;
+        }
+        catch(err){
+            console.log('something went wrong in password checking');
+            throw err;
+        }
+    }
+
 }
 
 module.exports=userService;
