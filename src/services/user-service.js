@@ -96,6 +96,25 @@ class userService{
         }
     }
 
+    async isAuthenticated(token){
+        try{
+            const isVerified=this.verifyToken(token);//will return an object {email:'',id:'',iat:'',exp:''}
+            if(!isVerified){
+                throw{err:'Invlaid Token'}
+            }
+            const user=await this.getUser(isVerified.id);
+            if(!user){
+                throw{err:'User not Found'}
+            }
+
+            return user.id;
+        }
+        catch(err){
+            console.log('Something happened in Service layer of user');
+            throw{err};
+        }
+    }
+
 }
 
 module.exports=userService;

@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
 
-  //Hook for encripting the user password before inserting into the database
+  //Hook for encripting the password before creation of new user into the database
   User.beforeCreate((user)=>{
     const encryptedPassword=bcrypt.hashSync(user.password, SALT);
     user.password=encryptedPassword;

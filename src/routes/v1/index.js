@@ -5,11 +5,15 @@ const authValidationMiddleware=require('../../middleware/index');
 
 router.post('/signup',
     authValidationMiddleware.authRequestValidate,
-    userController.create);
+    userController.create
+);
 router.delete('/user',userController.destroy);
 router.get('/user',userController.get);
 router.post('/signin',
     authValidationMiddleware.authRequestValidate,
-    userController.signIn);
+    userController.signIn
+);
+
+router.get('/isAuthenticated',userController.isAuthenticated);
 
 module.exports=router;
