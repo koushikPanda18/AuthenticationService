@@ -69,6 +69,10 @@ class userService{
     async signIn(email,plainPassword){
         //Step-1---get the user by email
         const user=await userrepository.getUserByEmail(email);
+        //If no user is found with the provided email 
+        if(!user){
+            throw('No user found with this email')
+        }
         //Step-2---verify password
         const matchPassword=this.checkPassword(plainPassword,user.password);
         if(!matchPassword){
